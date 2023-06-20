@@ -13,26 +13,13 @@ export class PlayerService {
 
     //Create a new player into DB
     async createPlayer(
-        firstName: string,
-        lastName: string,
-        email: string,
-        role: playerRole,
-        password: string,
-        picture: string
+        iplayer: Player
     ) {
         try {
-            const userData = await this.findUserByEmail(email);
+            const userData = await this.findUserByEmail(iplayer.pl_email);
             console.log(userData);
             if (!userData) {
-                const player = new Player();
-                player.pl_firstName = firstName;
-                player.pl_lastName = lastName;
-                player.pl_email = email;
-                player.pl_password = password;
-                player.pl_role = role;
-                player.pl_image = picture;
-                // player.pl_password = await hash(player.pl_password, 10);
-                await this.playerRepository.save(player);
+                await this.playerRepository.save(iplayer);
             } else {
                 throw new HttpException(
                     {

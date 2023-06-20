@@ -2,6 +2,7 @@ import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique
 import { playerRole } from "../interfaces/player.interface";
 import * as argon2 from 'argon2';
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Player {
@@ -11,23 +12,29 @@ export class Player {
     pl_id: number;
 
     @Column()
+    @ApiProperty()
     pl_firstName: string;
 
     @Column()
+    @ApiProperty()
     pl_lastName: string;
 
     @Column()
     @IsNotEmpty()
+    @ApiProperty()
     pl_password: string;
 
     @Column({ unique: true })
     @IsEmail()
+    @ApiProperty()
     pl_email: string;
 
     @Column({ type: 'enum', enum: playerRole, nullable: true })
+    @ApiProperty()
     pl_role: playerRole;
 
     @Column({ nullable: true })
+    @ApiProperty()
     pl_image: string;
 
     @BeforeInsert()

@@ -8,37 +8,24 @@ import {
     Param,
     Post,
 } from '@nestjs/common';
-import { playerRole } from '../interfaces/player.interface';
+import { ApiTags } from '@nestjs/swagger';
+import { Player } from '../entites/player.entity';
 import { PlayerService } from './player.service';
-
+@ApiTags('players')
 @Controller('api')
 export class PlayerController {
     constructor(private PlService: PlayerService) { }
     @Header('Catch-Control', 'none')
     @Post('createPlayer')
-    async createUser(
-        @Body('pl_firstName') pl_firstName: string,
-        @Body('pl_lastName') pl_lastName: string,
-        @Body('pl_email') pl_email: string,
-        @Body('pl_role') pl_role: playerRole,
-        @Body('pl_password') pl_password: string,
-        @Body('pl_image') pl_image: string
-    ): Promise<void> {
-        await this.PlService.createPlayer(
-            pl_firstName,
-            pl_lastName,
-            pl_email,
-            pl_role,
-            pl_password,
-            pl_image
-        );
+    async createUser(@Body() IPlayerDTO: Player): Promise<void> {
+        await this.PlService.createPlayer(IPlayerDTO);
     }
 
     @Header('Catch-Control', 'none')
     @Get('player/:id')
-    async getPlayerById(@Param() params: { id: number }) {
+    async getPlayerById(@Param('id') id: string) {
         try {
-            const pData = await this.PlService.findUserById(params.id);
+            const pData = await this.PlService.findUserById(+id);
             if (pData != null) {
                 return pData;
             } else {
