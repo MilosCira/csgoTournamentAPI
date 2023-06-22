@@ -37,6 +37,10 @@ export class Player {
     @ApiProperty()
     pl_image: string;
 
+    @Column({ default: 0 })
+    @ApiProperty()
+    pl_deleted: number;
+
     @BeforeInsert()
     async hashPassword() {
         this.pl_password = await argon2.hash(this.pl_password);
