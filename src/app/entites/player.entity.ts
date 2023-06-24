@@ -1,17 +1,23 @@
-import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { playerRole } from "../interfaces/player.interface";
 import * as argon2 from 'argon2';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from "@nestjs/swagger";
+import { Tournament } from "./tournament.entity";
+import { ITournament } from "../interfaces/tournament.interface";
 
 @Entity()
 export class Player {
+
+
+
     @Unique(['pl_id'])
     @PrimaryGeneratedColumn('increment')
-    // @OneToMany(() => Tip_Dok_Atribut, tip => tip.id_atribut_def)
+
     pl_id: number;
 
     @Column()
+
     @ApiProperty()
     pl_firstName: string;
 
@@ -41,8 +47,14 @@ export class Player {
     @ApiProperty()
     pl_deleted: number;
 
+    @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP" })
+    @ApiProperty()
+    pl_created: Date;
+
     @BeforeInsert()
     async hashPassword() {
         this.pl_password = await argon2.hash(this.pl_password);
     }
+
+
 }

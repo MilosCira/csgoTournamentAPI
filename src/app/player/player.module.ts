@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PlayerController } from './player.controller';
 import { PlayerService } from './player.service';
 import { AuthModule } from '../auth/auth.module';
+import { PlayerTeam } from '../entites/player.team.entity';
 
 @Module({
     controllers: [PlayerController],
@@ -12,6 +13,7 @@ import { AuthModule } from '../auth/auth.module';
     exports: [PlayerService],
     imports: [TypeOrmModule.forFeature([
         Player,
+        PlayerTeam
     ]),
         AuthModule
     ]

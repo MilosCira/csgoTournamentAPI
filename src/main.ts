@@ -5,8 +5,6 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
-  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('CSGO TOURNAMENT API')
     .setDescription('CSGO TOURNAMENT API description')
