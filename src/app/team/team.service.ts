@@ -67,6 +67,16 @@ export class TeamService {
         );
     }
 
+    //Accept team
+    async acceptTeamInvite(id: number) {
+        console.log(id);
+
+        const res = await this.em.query(`UPDATE player_team
+        SET pl_accept = 1
+        WHERE pl_team_id=${id}; `);
+        return res;
+    }
+
     //Update user in DB sent a Object of user and update any parametar
     async updateOne(id: number, team: Team): Promise<Observable<any>> {
         return from(this.teamRepo.update(id, team)).pipe(

@@ -1,7 +1,5 @@
 import { Body, Controller, Delete, Get, Header, HttpException, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { UserIsUserGuard } from '../auth/guards/UserIsUser.guard';
-import { Player } from '../entites/player.entity';
 import { PlayerTeam } from '../entites/player.team.entity';
 import { Team } from '../entites/team.entity';
 import { TeamService } from './team.service';
@@ -95,13 +93,14 @@ export class TeamController {
         return res;
     }
 
-    @Put('team/:id')
-    updateUser(@Param('id') id: number, @Body() team: Team) {
+    @Put('/:id')
+    updateTeam(@Param('id') id: number, @Body() team: Team) {
         return this.teamSer.updateOne(id, team)
     }
+    @Post('/accept')
+    acceptInvite(@Query('id') id: number) {
+        console.log(id);
 
-    @Delete('team/:id')
-    deleteUser(@Param('id') id: number) {
-        return this.teamSer.deleteTeam(id);
+        return this.teamSer.acceptTeamInvite(id);
     }
 }
