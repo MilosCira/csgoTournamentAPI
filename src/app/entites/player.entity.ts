@@ -51,10 +51,6 @@ export class Player {
     @ApiProperty()
     pl_created: Date;
 
-    @BeforeInsert()
-    async hashPassword() {
-        this.pl_password = await argon2.hash(this.pl_password);
-    }
 
 
 }

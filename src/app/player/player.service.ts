@@ -22,32 +22,21 @@ export class PlayerService {
         iplayer: Player
     ) {
         try {
-            const userData = await this.findUserByEmail(iplayer.pl_email);
-            console.log(userData);
-            if (!userData) {
-                iplayer.pl_password = await hash(iplayer.pl_password, 10);
-                await this.playerRepository.save(iplayer);
-            } else {
-                throw new HttpException(
-                    {
-                        status: HttpStatus.NOT_ACCEPTABLE,
-                        error: 'User with this email alredy exist',
-                    },
-                    403
-                );
-            }
+            iplayer.pl_password = await hash(iplayer.pl_password, 10);
+            await this.playerRepository.save(iplayer);
+
         } catch (err: any) {
             console.log(err);
 
-            if (err) {
-                throw new HttpException(
-                    {
-                        status: HttpStatus.FORBIDDEN,
-                        error: 'User with this email alredy exist',
-                    },
-                    403
-                );
-            }
+
+            throw new HttpException(
+                {
+                    status: HttpStatus.FORBIDDEN,
+                    error: 'User with this email alredy exist',
+                },
+                403
+            );
+
         }
     }
 
@@ -119,6 +108,9 @@ export class PlayerService {
             const user = await this.playerRepository.findOne({
                 where: { pl_email },
             });
+            if (!user) {
+                throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+            }
             const isMatch = await bcrypt.compare(password, user!.pl_password);
             if (user && isMatch) {
 

@@ -18,6 +18,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
+import { log } from 'console';
 import { map, Observable, tap } from 'rxjs';
 import { JwtAuthGuard } from '../auth/guards/jwt-guard';
 import { UserIsUserGuard } from '../auth/guards/UserIsUser.guard';
@@ -30,7 +31,9 @@ export class PlayerController {
     constructor(private plService: PlayerService) { }
     @Header('Catch-Control', 'none')
     @Post('createPlayer')
-    async createUser(@Body() IPlayerDTO: Player): Promise<void> {
+    async createPlayer(@Body() IPlayerDTO: Player): Promise<void> {
+        console.log(IPlayerDTO);
+
         await this.plService.createPlayer(IPlayerDTO);
     }
 
@@ -68,9 +71,10 @@ export class PlayerController {
     @Post('auth/login')
     @HttpCode(200)
     login(@Body() user: Player): Observable<any> {
+
         return this.plService.login(user).pipe(
             map((jwt: string) => {
-                return { token: jwt };
+                return { token: jwt, id: user.pl_id };
             })
         )
     }

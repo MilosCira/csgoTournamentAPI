@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { MaxLength } from "class-validator";
 import { Column, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { playerRole } from "../interfaces/player.interface";
-import { tournamentPasswordJoin } from "../interfaces/tournament.interface";
 import { Player } from "./player.entity";
 
 
@@ -16,7 +15,8 @@ export class Tournament {
     @ApiProperty()
     tou_name: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 500 })
+
     @ApiProperty()
     tou_description: string;
 
@@ -24,7 +24,7 @@ export class Tournament {
     @ApiProperty()
     tou_image: string;
 
-    @Column()
+    @Column({ nullable: true })
     @ApiProperty()
     tou_password: string;
 
@@ -32,9 +32,9 @@ export class Tournament {
     @ApiProperty()
     tou_price: string;
 
-    @Column({ type: 'enum', enum: tournamentPasswordJoin, default: tournamentPasswordJoin.NO, nullable: true })
+    @Column({ default: false })
     @ApiProperty()
-    tou_joinPassword?: tournamentPasswordJoin;
+    tou_joinPassword?: boolean;
 
     @Column({ type: 'timestamp' })
     @ApiProperty()
@@ -44,8 +44,13 @@ export class Tournament {
     @ApiProperty()
     tou_endDate?: Date;
 
+    @Column({ default: 0 })
+    @ApiProperty()
+    tou_deleted: number;
+
+
     @Column()
-    @OneToMany(() => Player, pl => pl.pl_id)
-    @JoinColumn({ name: "pl_id" })
+    @ApiProperty()
+
     pl_id: number;
 }

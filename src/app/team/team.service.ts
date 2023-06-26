@@ -57,7 +57,7 @@ export class TeamService {
             map((team: any) => {
                 if (!team) {
                     throw new HttpException(
-                        `Tim not found with id = ${team_id}`,
+                        `Team not found with id = ${team_id}`,
                         HttpStatus.NOT_FOUND
                     );
                 }
@@ -77,7 +77,7 @@ export class TeamService {
         return res;
     }
 
-    //Update user in DB sent a Object of user and update any parametar
+    //Update team in DB sent a Object of team and update any parametar
     async updateOne(id: number, team: Team): Promise<Observable<any>> {
         return from(this.teamRepo.update(id, team)).pipe(
             switchMap(() => this.findTeamById(id))

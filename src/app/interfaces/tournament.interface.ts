@@ -9,7 +9,3 @@ export interface ITournament {
     tou_endDate: Date
 }
 
-export enum tournamentPasswordJoin {
-    YES = "yes",
-    NO = "no"
-}
